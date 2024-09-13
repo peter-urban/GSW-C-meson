@@ -37,7 +37,7 @@ if host_machine.system() == 'windows'
   message('Setting /Tp flag to interpret c files as c++ files on windows')
   cpp_compile_args += ['/TP'] #interpret c files as c++ files on windows
   c_compile_args += ['/TP'] #interpret c files as c++ files on windows
-  link_language = 'c'
+  link_language = 'cpp'
 endif
 
 # --- sources ---
@@ -51,7 +51,7 @@ library_sources = [
 export_headers = ['gswteos-10.h']
 
 # --- define library and dependencies ---
-gsw_lib = library(
+gswteos_10_lib = library(
   project_name,
   library_sources,
   c_args: c_compile_args,
@@ -61,9 +61,9 @@ gsw_lib = library(
   install: true,
 )
 
-gsw_dep = declare_dependency(
+gswteos_10_dep = declare_dependency(
   dependencies: [m_dep],
-  link_with: [gsw_lib],
+  link_with: [gswteos_10_lib],
 )
 
 # --- Installation ---
@@ -73,19 +73,21 @@ install_headers(export_headers)
 # pkgconfig file
 pkg = import('pkgconfig')
 pkg.generate(
-  gsw_lib,
   description: description,
   url: url,
+  version: meson.project_version(),
+  name: project_name,
+  libraries: gswteos_10_lib,
 )
 
 # --- define tests ---
-gswexe = executable(
+gswteos_10_exe = executable(
   'gsw_check',
   sources: [program_sources],
-  dependencies: [gsw_dep],
+  dependencies: [gswteos_10_dep],
   c_args: c_compile_args,
   cpp_args: cpp_compile_args,
   link_language: link_language,
 )
 
-test('run_gsw_check', gswexe)
+test('run_gsw_check', gswteos_10_exe)
