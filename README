@@ -1,4 +1,31 @@
 
+TEOS-10 V3.06 GSW Oceanographic Toolbox in C -- with meson wrapper
+==================================================================
+
+This fork of TEOS-10/GSW-C Oceanographic toolbox adds a meson.build file to allow easy integration with the meson build system.
+
+Install
+-------
+
+This will install gswteos-10.h and a shared library libgswteos-10 and a package config file gswteos-10.pc.
+
+```
+$ meson setup builddir
+$ meson install -C builddir
+```
+
+To configure meson see mesonbuild.com (build static lib, change prefix etc.)
+
+Run tests
+---------
+
+```
+$ meson test -C builddir -v
+```
+
+Original README
+###############
+
 TEOS-10 V3.05 GSW Oceanographic Toolbox in C
 ============================================
 
