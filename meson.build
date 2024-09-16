@@ -1,4 +1,4 @@
- 
+
 # SPDX-FileCopyrightText: 2024 Peter Urban
 #
 # SPDX-License-Identifier: BSD-3-Clause
@@ -38,6 +38,12 @@ if host_machine.system() == 'windows'
   cpp_compile_args += ['/TP'] #interpret c files as c++ files on windows
   c_compile_args += ['/TP'] #interpret c files as c++ files on windows
   link_language = 'cpp'
+endif
+
+if get_option('force-cpp')
+  if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
+    c_compile_args += ['-xc++']
+  endif
 endif
 
 # --- sources ---

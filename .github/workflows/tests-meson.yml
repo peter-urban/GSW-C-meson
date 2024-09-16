@@ -8,21 +8,30 @@ on:
 
 jobs:
   run:
-    name: meson test ${{ matrix.os }} ${{ matrix.compiler }} ${{ matrix.library }}
+    name: meson ${{ matrix.os }} ${{ matrix.library }} ${{ matrix.compiler }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        compiler: [gcc, clang, clang-cl, cl]
         library: ["static", "shared"]
-        include:
-          - compiler: gcc
-            os: ubuntu-latest
-          - compiler: clang
-            os: macos-latest
-          - compiler: clang-cl
-            os: windows-latest
-          - compiler: cl
-            os: windows-latest
+        compiler: ["gcc", "clang", "cl", "clang-cl"]
+        force_cpp: [-Dforce-cpp=True, ""] 
+        os: [windows-latest, ubuntu-latest, macos-latest]
+        exclude:
+          - os: windows-latest
+            compiler: "clang"
+          - os: windows-latest
+            compiler: "gcc"
+          - os: windows-latest
+            force_cpp: "-Dforce-cpp=True"
+          - os: ubuntu-latest
+            compiler: "cl"
+          - os: ubuntu-latest
+            compiler: "clang-cl"
+          - os: macos-latest
+            compiler: "cl"
+          - os: macos-latest
+            compiler: "clang-cl"
+            
       fail-fast: false
 
     env:
@@ -31,35 +40,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      #- uses: ilammy/msvc-dev-cmd@v1
+      - uses: ilammy/msvc-dev-cmd@v1
       - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Prepare MSVC
-        if: matrix.os == 'windows-latest'
-        uses: bus1/cabuild/action/msdevshell@v1
-        with:
-          architecture: x64
-
-      - name: Set up Clang
-        if: matrix.compiler == 'clang-cl'
-        uses: egor-tensin/setup-clang@v1
-        with:
-          version: latest
-
-      # make sure meson can find msvc
-      - uses: TheMrMilchmann/setup-msvc-dev@v3
-        if: matrix.os == 'windows-latest'
-        with:
-          arch: x64
 
       - name: install dependencies
         run: python -m pip install meson ninja
 
       - name: Compile
         run: |
-          meson setup builddir -Ddefault_library=${{matrix.library}}
+          meson setup builddir -Ddefault_library=${{matrix.library}} ${{matrix.force_cpp}}
           meson compile -C builddir
 
       - name: Test
