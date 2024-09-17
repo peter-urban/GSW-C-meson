@@ -40,7 +40,7 @@ if host_machine.system() == 'windows'
   link_language = 'cpp'
 endif
 
-if get_option('force-cpp')
+if get_option('force-cpp').enabled()
   if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
     c_compile_args += ['-xc++']
   endif

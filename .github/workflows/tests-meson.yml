@@ -14,7 +14,7 @@ jobs:
       matrix:
         library: ["static", "shared"]
         compiler: ["gcc", "clang", "cl", "clang-cl"]
-        force_cpp: [-Dforce-cpp=True, ""]
+        force_cpp: [-Dforce-cpp=enabled, ""]
         os: [windows-latest, ubuntu-latest, macos-latest]
         exclude:
           - os: windows-latest
@@ -22,7 +22,7 @@ jobs:
           - os: windows-latest
             compiler: "gcc"
           - os: windows-latest
-            force_cpp: "-Dforce-cpp=True"
+            force_cpp: "-Dforce-cpp=enabled"
           - os: ubuntu-latest
             compiler: "cl"
           - os: ubuntu-latest
