@@ -8,13 +8,13 @@ on:
 
 jobs:
   run:
-    name: meson ${{ matrix.os }} ${{ matrix.library }} ${{ matrix.compiler }}
+    name: meson ${{ matrix.os }} ${{ matrix.compiler }} ${{ matrix.force_cpp }} ${{ matrix.library }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         library: ["static", "shared"]
         compiler: ["gcc", "clang", "cl", "clang-cl"]
-        force_cpp: [-Dforce-cpp=True, ""] 
+        force_cpp: [-Dforce-cpp=True, ""]
         os: [windows-latest, ubuntu-latest, macos-latest]
         exclude:
           - os: windows-latest
@@ -31,7 +31,7 @@ jobs:
             compiler: "cl"
           - os: macos-latest
             compiler: "clang-cl"
-            
+
       fail-fast: false
 
     env:
