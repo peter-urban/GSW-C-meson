@@ -8,7 +8,7 @@ on:
 
 jobs:
   run:
-    name: meson ${{ matrix.os }} ${{ matrix.compiler }} ${{ matrix.force_cpp }} ${{ matrix.library }}
+    name: lib${{ matrix.library }} ${{ matrix.compiler }} ${{ matrix.os }} ${{ matrix.force_cpp }} 
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
