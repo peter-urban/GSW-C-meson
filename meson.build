@@ -70,6 +70,7 @@ gswteos_10_lib = library(
 gswteos_10_dep = declare_dependency(
   dependencies: [m_dep],
   link_with: [gswteos_10_lib],
+  include_directories: include_directories('.'),
 )
 
 # --- Installation ---
